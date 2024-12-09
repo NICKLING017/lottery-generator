@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双色球摇号器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f2f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            margin: 5px;
+            font-weight: bold;
+            color: white;
+        }
+        .red {
+            background-color: #ff4d4f;
+        }
+        .blue {
+            background-color: #1890ff;
+        }
+        button {
+            background-color: #52c41a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #389e0d;
+        }
+        .result {
+            margin: 20px 0;
+        }
+        .history {
+            margin-top: 20px;
+            text-align: left;
+            padding: 10px;
+            background-color: #fafafa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>双色球摇号器</h1>
+        <div class="result" id="result">
+            <p>点击下方按钮开始摇号</p>
+        </div>
+        <button onclick="generateNumbers()">摇号</button>
+        <div class="history" id="history">
+            <h3>历史记录：</h3>
+        </div>
+    </div>
+
+    <script>
+        function generateNumbers() {
+            let redBalls = [];
+            
+            // 生成红球
+            while (redBalls.length < 6) {
+                let newBall;
+                switch (redBalls.length) {
+                    case 0:
+                        newBall = Math.floor(Math.random() * 9) + 1;  // 1-9
+                        break;
+                    case 1:
+                        newBall = Math.floor(Math.random() * 13) + 3;  // 3-15
+                        break;
+                    case 2:
+                        newBall = Math.floor(Math.random() * 15) + 7;  // 7-21
+                        break;
+                    case 3:
+                        newBall = Math.floor(Math.random() * 14) + 13;  // 13-26
+                        break;
+                    case 4:
+                        newBall = Math.floor(Math.random() * 15) + 18;  // 18-32
+                        break;
+                    case 5:
+                        newBall = Math.floor(Math.random() * 10) + 24;  // 24-33
+                        break;
+                }
+                
+                if (!redBalls.includes(newBall)) {
+                    redBalls.push(newBall);
+                }
+            }
+            
+            // 排序红球
+            redBalls.sort((a, b) => a - b);
+            
+            // 生成蓝球
+            const blueBall = Math.floor(Math.random() * 16) + 1;
+            
+            // 显示结果
+            const resultDiv = document.getElementById('result');
+            let resultHTML = '<div>';
+            
+            // 显示红球
+            redBalls.forEach(ball => {
+                resultHTML += `<span class="number red">${ball.toString().padStart(2, '0')}</span>`;
+            });
+            
+            // 显示蓝球
+            resultHTML += `<span class="number blue">${blueBall.toString().padStart(2, '0')}</span>`;
+            resultHTML += '</div>';
+            
+            resultDiv.innerHTML = resultHTML;
+            
+            // 添加到历史记录
+            const historyDiv = document.getElementById('history');
+            const date = new Date().toLocaleTimeString();
+            const historyItem = document.createElement('p');
+            historyItem.innerHTML = `${date}: ${redBalls.map(n => n.toString().padStart(2, '0')).join(' ')} + ${blueBall.toString().padStart(2, '0')}`;
+            
+            // 将新记录插入到最上方
+            if (historyDiv.children.length > 1) {
+                historyDiv.insertBefore(historyItem, historyDiv.children[1]);
+            } else {
+                historyDiv.appendChild(historyItem);
+            }
+            
+            // 限制历史记录数量
+            if (historyDiv.children.length > 11) { // 保留标题和最近10条记录
+                historyDiv.removeChild(historyDiv.lastChild);
+            }
+        }
+    </script>
+</body>
+</html>
