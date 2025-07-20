@@ -12,7 +12,7 @@
 
 ## 使用方法
 
-1. 访问 [在线版本](https://你的用户名.github.io/lottery-generator)
+1. 访问 [在线版本](https://nickling017.github.io/lottery-generator/)
 2. 点击"摇号"按钮生成新的号码组合
 3. 查看历史记录了解之前生成的号码
 
